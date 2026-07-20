@@ -16,6 +16,13 @@ The `/health` endpoint remains unauthenticated for container health checks.
 If either the upstream MCP process or the authentication proxy exits, the
 wrapper stops the container so the deployment platform can restart it cleanly.
 
+The wrapper currently disables the upstream `check_health` MCP tool. In the
+pinned `0.2.3` image, an ImapFlow socket timeout can be emitted outside the
+tool's `try/catch` and terminate the server process. The HTTP `/health` endpoint
+and normal read tools remain available. The build deliberately fails if the
+expected upstream registration code changes, so this compatibility patch cannot
+silently drift across upstream releases.
+
 ## Configuration
 
 Set `MCP_BEARER_TOKEN` to a strong random secret. All upstream
