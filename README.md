@@ -31,6 +31,12 @@ docker run --rm -p 8080:8080 \
 Never bake mailbox passwords or bearer tokens into the image, repository, or
 container labels. Store them as runtime secrets in your deployment platform.
 
+For the currently hosted Coolify instance, `coolify-labels.txt` contains the
+non-secret Traefik routing labels. Authentication is deliberately enforced by
+the container instead of matching a secret in a Traefik router rule; this lets
+clients discover Bearer authentication from the standards-compliant `401`
+challenge.
+
 ## Endpoints
 
 - `GET /health` — public health probe

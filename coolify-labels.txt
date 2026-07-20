@@ -1,0 +1,12 @@
+traefik.enable=true
+traefik.http.middlewares.email-mcp-redirect.redirectscheme.scheme=https
+traefik.http.routers.email-mcp-http.entrypoints=http
+traefik.http.routers.email-mcp-http.middlewares=email-mcp-redirect
+traefik.http.routers.email-mcp-http.rule=Host(`email-mcp.159.195.151.89.sslip.io`)
+traefik.http.routers.email-mcp-http.service=email-mcp
+traefik.http.routers.email-mcp-https.entrypoints=https
+traefik.http.routers.email-mcp-https.rule=Host(`email-mcp.159.195.151.89.sslip.io`)
+traefik.http.routers.email-mcp-https.service=email-mcp
+traefik.http.routers.email-mcp-https.tls=true
+traefik.http.routers.email-mcp-https.tls.certresolver=letsencrypt
+traefik.http.services.email-mcp.loadbalancer.server.port=8080
