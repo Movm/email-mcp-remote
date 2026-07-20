@@ -3,9 +3,9 @@
 A small, security-focused deployment wrapper for
 [`codefuturist/email-mcp`](https://github.com/codefuturist/email-mcp).
 
-It keeps the upstream server unchanged and adds HTTP Bearer authentication in
-front of its Streamable HTTP `/mcp` endpoint. Unauthenticated requests receive
-an MCP-client-friendly response:
+It keeps the upstream server unchanged and adds a small Node.js reverse proxy
+with HTTP Bearer authentication in front of its Streamable HTTP `/mcp`
+endpoint. Unauthenticated requests receive an MCP-client-friendly response:
 
 ```http
 HTTP/1.1 401 Unauthorized

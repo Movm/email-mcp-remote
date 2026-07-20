@@ -9,13 +9,13 @@ fi
 node /app/dist/main.js http 8081 &
 email_pid=$!
 
-caddy run --config /etc/caddy/Caddyfile --adapter caddyfile &
-caddy_pid=$!
+node /app/proxy.mjs &
+proxy_pid=$!
 
 cleanup() {
-  kill "$caddy_pid" "$email_pid" 2>/dev/null || true
-  wait "$caddy_pid" "$email_pid" 2>/dev/null || true
+  kill "$proxy_pid" "$email_pid" 2>/dev/null || true
+  wait "$proxy_pid" "$email_pid" 2>/dev/null || true
 }
 
 trap cleanup EXIT INT TERM
-wait "$caddy_pid"
+wait "$proxy_pid"
