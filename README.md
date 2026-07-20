@@ -13,6 +13,8 @@ WWW-Authenticate: Bearer realm="email-mcp"
 ```
 
 The `/health` endpoint remains unauthenticated for container health checks.
+If either the upstream MCP process or the authentication proxy exits, the
+wrapper stops the container so the deployment platform can restart it cleanly.
 
 ## Configuration
 

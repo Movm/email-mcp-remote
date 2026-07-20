@@ -18,4 +18,10 @@ cleanup() {
 }
 
 trap cleanup EXIT INT TERM
-wait "$proxy_pid"
+
+while kill -0 "$proxy_pid" 2>/dev/null && kill -0 "$email_pid" 2>/dev/null; do
+  sleep 1
+done
+
+echo "A child process exited; stopping container so the orchestrator can restart it" >&2
+exit 1
