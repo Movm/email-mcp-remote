@@ -16,18 +16,24 @@ The `/health` endpoint remains unauthenticated for container health checks.
 If either the upstream MCP process or the authentication proxy exits, the
 wrapper stops the container so the deployment platform can restart it cleanly.
 
-The wrapper currently disables the upstream `check_health` MCP tool. In the
-pinned `0.2.3` image, an ImapFlow socket timeout can be emitted outside the
-tool's `try/catch` and terminate the server process. The HTTP `/health` endpoint
-and normal read tools remain available. The build deliberately fails if the
-expected upstream registration code changes, so this compatibility patch cannot
-silently drift across upstream releases.
+The hosted deployment is draft-only: all upstream read tools remain available
+and `save_draft` may append an unsent message to the account's IMAP Drafts
+folder. Sending, deleting, moving, flagging, folder changes, scheduling, and
+`send_draft` are not exposed. Keep `MCP_EMAIL_READ_ONLY=true`; the wrapper
+selectively enables only the patched `save_draft` registration.
+
+The wrapper also disables the upstream `check_health` MCP tool. In the pinned
+`0.2.3` image, an ImapFlow socket timeout can be emitted outside the tool's
+`try/catch` and terminate the server process. The HTTP `/health` endpoint
+remains available. The build deliberately fails if the expected upstream
+registration code changes, so these compatibility patches cannot silently
+drift across upstream releases.
 
 ## Configuration
 
 Set `MCP_BEARER_TOKEN` to a strong random secret. All upstream
-`MCP_EMAIL_*` variables are passed through unchanged. For a read-only mailbox,
-set `MCP_EMAIL_READ_ONLY=true`.
+`MCP_EMAIL_*` variables are passed through unchanged. Set
+`MCP_EMAIL_READ_ONLY=true` for the intended read-plus-draft-only tool surface.
 
 ```bash
 docker build -t email-mcp-remote .
