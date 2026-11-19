@@ -15,7 +15,7 @@ function forward(req, res) {
       hostname: '127.0.0.1',
       port: upstreamPort,
       method: req.method,
-      path: req.url,
+      path: req.url === '/health' ? '/healthz' : req.url,
       headers,
     },
     (upstreamResponse) => {

@@ -1,4 +1,4 @@
-FROM ghcr.io/codefuturist/email-mcp:0.2.3
+FROM ghcr.io/codefuturist/email-mcp:0.6.0
 
 USER root
 RUN apt-get update \

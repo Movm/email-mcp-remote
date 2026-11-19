@@ -13,7 +13,7 @@ function replaceExactlyOnce(source, search, replacement, label) {
 }
 
 export function patchRegisterSource(source) {
-  const healthRegistration = 'registerHealthTools(server, connections, imapService);';
+  const healthRegistration = 'registerHealthTools(server, connections, imapService, mailReadService, cacheStore, blobStore);';
   const writeToolsMarker = '    // Write tools — skipped in read-only mode\n';
 
   let patched = replaceExactlyOnce(
@@ -21,6 +21,13 @@ export function patchRegisterSource(source) {
     healthRegistration,
     '// check_health disabled by deployment wrapper: upstream ImapFlow timeout can terminate the process.',
     'check_health registration',
+  );
+
+  patched = replaceExactlyOnce(
+    patched,
+    'registerVerificationTools(server, imapService, config, watcherService, clipboardService, verificationCatcher);',
+    '// Verification tools disabled by deployment wrapper to preserve the existing tool surface.',
+    'verification-tools registration',
   );
 
   patched = replaceExactlyOnce(

@@ -5,7 +5,8 @@ import { patchDraftsSource, patchRegisterSource } from './patch-upstream.mjs';
 
 test('read-only mode registers only the patched draft tool group', () => {
   const source = [
-    'registerHealthTools(server, connections, imapService);',
+    'registerHealthTools(server, connections, imapService, mailReadService, cacheStore, blobStore);',
+    'registerVerificationTools(server, imapService, config, watcherService, clipboardService, verificationCatcher);',
     '    // Write tools — skipped in read-only mode',
     '    if (!readOnly) {',
     '        registerSendTools(server, smtpService);',
@@ -15,6 +16,7 @@ test('read-only mode registers only the patched draft tool group', () => {
   const patched = patchRegisterSource(source);
 
   assert.doesNotMatch(patched, /registerHealthTools\(/);
+  assert.doesNotMatch(patched, /registerVerificationTools\(/);
   assert.match(patched, /if \(readOnly\) \{\n        registerDraftTools/);
   assert.match(patched, /if \(!readOnly\)/);
 });

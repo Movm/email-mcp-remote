@@ -6,7 +6,8 @@ if [ -z "${MCP_BEARER_TOKEN:-}" ]; then
   exit 1
 fi
 
-node /app/dist/main.js http 8081 &
+MCP_EMAIL_READ_ONLY=true MCP_EMAIL_VERIFICATION_ENABLED=false MCP_EMAIL_CACHE_ENABLED=false \
+  node /app/dist/main.js http --host 127.0.0.1 --port 8081 --path /mcp &
 email_pid=$!
 
 node /app/proxy.mjs &
